@@ -84,16 +84,24 @@ def lecture():
 # --------------------
 @app.route("/consultation")
 def consultation():
-    if not est_authentifie():
+    # sécurité
+    if "authentifie" not in session:
         return redirect(url_for("authentification"))
 
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM livres")
-    livres = cursor.fetchall()
-    conn.close()
+    try:
+        conn = sqlite3.connect("database.db")
+        cursor = conn.cursor()
 
-    return render_template("read_data.html", data=livres)
+        cursor.execute("SELECT id, titre, auteur, annee_publication FROM livres")
+        livres = cursor.fetchall()
+
+        conn.close()
+
+        return render_template("read_data.html", data=livres)
+
+    except Exception as e:
+        return f"ERREUR CONSULTATION : {e}"
+
 
 
 @app.route("/ajouter_livre", methods=["GET", "POST"])
