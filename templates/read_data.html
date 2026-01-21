@@ -1,28 +1,35 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Clients</title>
+    <title>Consultation - Bibliothèque</title>
+    <style>
+        table { border-collapse: collapse; width: 100%; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        tr:nth-child(even) { background-color: #f2 f2 f2; }
+        .btn { padding: 10px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; }
+    </style>
 </head>
 <body>
-    <h1>Liste des Clients</h1>
+    <h1>Liste des Livres</h1>
+    <a href="/ajouter_livre" class="btn">Ajouter un nouveau livre</a>
+    <br><br>
     <table>
-        <tr>
-            <th>ID</th>
-            <th>Création</th>
-            <th>Nom</th>
-            <th>Prénom</th>
-            <th>Adresse</th>
-        </tr>
-        {% for row in data %}
-        <tr>
-            <td>{{ row[0] }}</td>
-            <td>{{ row[1] }}</td>
-            <td>{{ row[2] }}</td>
-            <td>{{ row[3] }}</td>
-            <td>{{ row[4] }}</td>
-        </tr>
-        {% endfor %}
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Titre</th>
+                <th>Auteur</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data %}
+            <tr>
+                <td>{{ row[0] }}</td> <td>{{ row[1] }}</td> <td>{{ row[2] }}</td> </tr>
+            {% endfor %}
+        </tbody>
     </table>
+    <br>
+    <a href="/">Retour à l'accueil</a>
 </body>
 </html>
