@@ -9,32 +9,32 @@
 <h1>Liste des livres</h1>
 
 {% if data|length == 0 %}
-    <p>Aucun livre dans la base.</p>
+<p>Aucun livre trouvé</p>
 {% else %}
 <table border="1" cellpadding="5">
-    <tr>
-        <th>ID</th>
-        <th>Titre</th>
-        <th>Auteur</th>
-        <th>Année</th>
-        {% if session.get("role") == "admin" %}
-        <th>Action</th>
-        {% endif %}
-    </tr>
+<tr>
+    <th>ID</th>
+    <th>Titre</th>
+    <th>Auteur</th>
+    <th>Année</th>
+    {% if session.get("role") == "admin" %}
+    <th>Action</th>
+    {% endif %}
+</tr>
 
-    {% for livre in data %}
-    <tr>
-        <td>{{ livre[0] }}</td>
-        <td>{{ livre[1] }}</td>
-        <td>{{ livre[2] }}</td>
-        <td>{{ livre[3] }}</td>
-        {% if session.get("role") == "admin" %}
-        <td>
-            <a href="/supprimer_livre/{{ livre[0] }}">Supprimer</a>
-        </td>
-        {% endif %}
-    </tr>
-    {% endfor %}
+{% for livre in data %}
+<tr>
+    <td>{{ livre["id"] }}</td>
+    <td>{{ livre["titre"] }}</td>
+    <td>{{ livre["auteur"] }}</td>
+    <td>{{ livre["annee_publication"] }}</td>
+    {% if session.get("role") == "admin" %}
+    <td>
+        <a href="/supprimer_livre/{{ livre['id'] }}">Supprimer</a>
+    </td>
+    {% endif %}
+</tr>
+{% endfor %}
 </table>
 {% endif %}
 
