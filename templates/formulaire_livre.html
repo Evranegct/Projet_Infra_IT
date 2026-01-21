@@ -2,30 +2,59 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Ajouter un Livre</title>
+    <title>Ajouter un livre</title>
     <style>
-        form { max-width: 400px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; }
-        div { margin-bottom: 10px; }
-        label { display: block; }
-        input[type="text"] { width: 100%; padding: 8px; }
-        input[type="submit"] { background: #007bff; color: white; border: none; padding: 10px; cursor: pointer; }
+        body {
+            background: #ecf0f1;
+            font-family: Arial, sans-serif;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 500px;
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin: auto;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 12px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #27ae60;
+            border: none;
+            color: white;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <h1 style="text-align: center;">Enregistrer un Livre</h1>
-    <form action="/ajouter_livre" method="post">
-        <div>
-            <label for="titre">Titre du livre :</label>
-            <input type="text" id="titre" name="titre" required>
-        </div>
-        <div>
-            <label for="auteur">Auteur :</label>
-            <input type="text" id="auteur" name="auteur" required>
-        </div>
-        <div>
-            <input type="submit" value="Enregistrer dans la base">
-        </div>
+
+<div class="container">
+    <h2>Ajouter un livre</h2>
+
+    <form method="POST">
+        <input type="text" name="titre" placeholder="Titre du livre" required>
+        <input type="text" name="auteur" placeholder="Auteur" required>
+        <input type="number" name="annee" placeholder="Année de publication" required>
+        <button type="submit">Ajouter</button>
     </form>
-    <p style="text-align: center;"><a href="/consultation/">Voir la liste des livres</a></p>
+</div>
+
 </body>
 </html>
