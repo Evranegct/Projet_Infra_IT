@@ -2,34 +2,69 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Consultation - Bibliothèque</title>
+    <title>Bibliothèque</title>
     <style>
-        table { border-collapse: collapse; width: 100%; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        tr:nth-child(even) { background-color: #f2 f2 f2; }
-        .btn { padding: 10px; background: #28a745; color: white; text-decoration: none; border-radius: 5px; }
+        body {
+            background: #f4f6f7;
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background: #34495e;
+            color: white;
+        }
+
+        a.delete {
+            color: red;
+            text-decoration: none;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
-    <h1>Liste des Livres</h1>
-    <a href="/ajouter_livre" class="btn">Ajouter un nouveau livre</a>
-    <br><br>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Titre</th>
-                <th>Auteur</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in data %}
-            <tr>
-                <td>{{ row[0] }}</td> <td>{{ row[1] }}</td> <td>{{ row[2] }}</td> </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    <br>
-    <a href="/">Retour à l'accueil</a>
+
+<h2>Liste des livres</h2>
+
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Titre</th>
+        <th>Auteur</th>
+        <th>Année</th>
+        {% if session.get('role') == 'admin' %}
+        <th>Action</th>
+        {% endif %}
+    </tr>
+
+    {% for livre in data %}
+    <tr>
+        <td>{{ livre[0] }}</td>
+        <td>{{ livre[1] }}</td>
+        <td>{{ livre[2] }}</td>
+        <td>{{ livre[3] }}</td>
+        {% if session.get('role') == 'admin' %}
+        <td>
+            <a class="delete" href="/supprimer_livre/{{ livre[0] }}">Supprimer</a>
+        </td>
+        {% endif %}
+    </tr>
+    {% endfor %}
+</table>
+
 </body>
 </html>
