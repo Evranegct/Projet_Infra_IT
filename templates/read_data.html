@@ -2,51 +2,22 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Bibliothèque</title>
-    <style>
-        body {
-            background: #f4f6f7;
-            font-family: Arial, sans-serif;
-            padding: 30px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-
-        th, td {
-            padding: 12px;
-            text-align: center;
-            border-bottom: 1px solid #ddd;
-        }
-
-        th {
-            background: #34495e;
-            color: white;
-        }
-
-        a.delete {
-            color: red;
-            text-decoration: none;
-            font-weight: bold;
-        }
-    </style>
+    <title>Consultation</title>
 </head>
 <body>
 
-<h2>Liste des livres</h2>
+<h1>Liste des livres</h1>
 
-<table>
+{% if data|length == 0 %}
+    <p>Aucun livre dans la base.</p>
+{% else %}
+<table border="1" cellpadding="5">
     <tr>
         <th>ID</th>
         <th>Titre</th>
         <th>Auteur</th>
         <th>Année</th>
-        {% if session.get('role') == 'admin' %}
+        {% if session.get("role") == "admin" %}
         <th>Action</th>
         {% endif %}
     </tr>
@@ -57,14 +28,18 @@
         <td>{{ livre[1] }}</td>
         <td>{{ livre[2] }}</td>
         <td>{{ livre[3] }}</td>
-        {% if session.get('role') == 'admin' %}
+        {% if session.get("role") == "admin" %}
         <td>
-            <a class="delete" href="/supprimer_livre/{{ livre[0] }}">Supprimer</a>
+            <a href="/supprimer_livre/{{ livre[0] }}">Supprimer</a>
         </td>
         {% endif %}
     </tr>
     {% endfor %}
 </table>
+{% endif %}
+
+<br>
+<a href="/lecture">Retour</a>
 
 </body>
 </html>
