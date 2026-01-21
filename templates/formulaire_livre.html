@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un Livre</title>
+    <style>
+        form { max-width: 400px; margin: 20px auto; padding: 20px; border: 1px solid #ccc; }
+        div { margin-bottom: 10px; }
+        label { display: block; }
+        input[type="text"] { width: 100%; padding: 8px; }
+        input[type="submit"] { background: #007bff; color: white; border: none; padding: 10px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <h1 style="text-align: center;">Enregistrer un Livre</h1>
+    <form action="/ajouter_livre" method="post">
+        <div>
+            <label for="titre">Titre du livre :</label>
+            <input type="text" id="titre" name="titre" required>
+        </div>
+        <div>
+            <label for="auteur">Auteur :</label>
+            <input type="text" id="auteur" name="auteur" required>
+        </div>
+        <div>
+            <input type="submit" value="Enregistrer dans la base">
+        </div>
+    </form>
+    <p style="text-align: center;"><a href="/consultation/">Voir la liste des livres</a></p>
+</body>
+</html>
