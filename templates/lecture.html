@@ -1,0 +1,10 @@
+<h1>Bienvenue {{ username }}</h1>
+<p>Rôle : {{ role }}</p>
+
+<a href="/consultation">Voir les livres</a><br>
+
+{% if role == "admin" %}
+<a href="/ajouter_livre">Ajouter un livre</a><br>
+{% endif %}
+
+<a href="/deconnexion">Déconnexion</a>
