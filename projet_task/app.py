@@ -42,7 +42,4 @@ def delete(id):
     return redirect(url_for('index'))
 
 if __name__ == '__main__':
-    # host='0.0.0.0' permet au serveur d'être visible depuis l'extérieur
-    # port=5000 est le port standard de Flask
-    # debug=True permet de voir les erreurs s'afficher sur ton navigateur
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
