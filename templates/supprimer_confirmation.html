@@ -1,0 +1,5 @@
+<h1>Supprimer la tâche : {{ tache['titre'] }} ?</h1>
+<form method="POST">
+    <button type="submit">Oui, supprimer définitivement</button>
+    <a href="{{ url_for('index') }}">Annuler</a>
+</form>
