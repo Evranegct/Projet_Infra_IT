@@ -1,158 +1,62 @@
-from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
+from flask import Flask, render_template, request, url_for, flash, redirect
 
 app = Flask(__name__)
-app.secret_key = "cle_secrete_alwaysdata"
+app.config['SECRET_KEY'] = 'votre_cle_secrete_ici'
 
-DATABASE = "database.db"
-
-# --------------------
-# OUTILS
-# --------------------
-def get_db():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row  # IMPORTANT (évite bugs)
+def get_db_connection():
+    conn = sqlite3.connect('database.db')
+    conn.row_factory = sqlite3.Row
     return conn
 
-def est_authentifie():
-    return session.get("authentifie") == True
+# 1. Page d'accueil : Afficher les tâches [cite: 7, 13]
+@app.route('/')
+def index():
+    conn = get_db_connection()
+    # On récupère toutes les tâches
+    taches = conn.execute('SELECT * FROM taches').fetchall()
+    conn.close()
+    return render_template('index.html', taches=taches)
 
+# 2. Ajouter une tâche [cite: 6, 13]
+@app.route('/ajouter', methods=('GET', 'POST'))
+def ajouter():
+    if request.method == 'POST':
+        titre = request.form['titre']
+        description = request.form['description']
+        date = request.form['date_echeance']
 
-# --------------------
-# ROUTE TEST
-# --------------------
-@app.route("/test")
-def test():
-    return "SERVEUR OK"
+        if not titre:
+            flash('Le titre est obligatoire!')
+        else:
+            conn = get_db_connection()
+            conn.execute('INSERT INTO taches (titre, description, date_echeance) VALUES (?, ?, ?)',
+                         (titre, description, date))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('index'))
+           
+    return render_template('ajouter.html')
 
-
-# --------------------
-# ACCUEIL
-# --------------------
-@app.route("/")
-def home():
-    return render_template("hello.html")
-
-
-# --------------------
-# AUTHENTIFICATION
-# --------------------
-@app.route("/authentification", methods=["GET", "POST"])
-def authentification():
-    if request.method == "POST":
-        username = request.form.get("username")
-        password = request.form.get("password")
-
-        if username == "admin" and password == "password":
-            session.clear()
-            session["authentifie"] = True
-            session["username"] = "admin"
-            session["role"] = "admin"
-            return redirect(url_for("lecture"))
-
-        if username == "user" and password == "12345":
-            session.clear()
-            session["authentifie"] = True
-            session["username"] = "user"
-            session["role"] = "user"
-            return redirect(url_for("lecture"))
-
-        return render_template("formulaire_authentification.html", error=True)
-
-    return render_template("formulaire_authentification.html", error=False)
-
-
-@app.route("/deconnexion")
-def deconnexion():
-    session.clear()
-    return redirect(url_for("authentification"))
-
-
-# --------------------
-# PAGE PRINCIPALE
-# --------------------
-@app.route("/lecture")
-def lecture():
-    if not est_authentifie():
-        return redirect(url_for("authentification"))
-
-    return render_template(
-        "lecture.html",
-        username=session["username"],
-        role=session["role"]
-    )
-
-
-# --------------------
-# CONSULTATION DES LIVRES (CORRIGÉE)
-# --------------------
-@app.route("/consultation")
-def consultation():
-    if not est_authentifie():
-        return redirect(url_for("authentification"))
-
-    try:
-        conn = get_db()
-        cursor = conn.cursor()
-
-        cursor.execute("SELECT * FROM livres")
-        livres = cursor.fetchall()
-
-        conn.close()
-
-        return render_template("read_data.html", data=livres)
-
-    except Exception as e:
-        # Affiche l’erreur directement (AlwaysData friendly)
-        return f"<h1>Erreur consultation</h1><pre>{e}</pre>"
-
-
-# --------------------
-# AJOUT LIVRE
-# --------------------
-@app.route("/ajouter_livre", methods=["GET", "POST"])
-def ajouter_livre():
-    if not est_authentifie() or session["role"] != "admin":
-        return "Accès refusé", 403
-
-    if request.method == "POST":
-        titre = request.form.get("titre")
-        auteur = request.form.get("auteur")
-        annee = request.form.get("annee")
-
-        conn = get_db()
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO livres (titre, auteur, annee_publication) VALUES (?, ?, ?)",
-            (titre, auteur, annee)
-        )
-        conn.commit()
-        conn.close()
-
-        return redirect(url_for("consultation"))
-
-    return render_template("formulaire_livre.html")
-
-
-# --------------------
-# SUPPRESSION LIVRE
-# --------------------
-@app.route("/supprimer_livre/<int:id>")
-def supprimer_livre(id):
-    if not est_authentifie() or session["role"] != "admin":
-        return "Accès refusé", 403
-
-    conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM livres WHERE id = ?", (id,))
+# 3. Supprimer une tâche
+@app.route('/supprimer/<int:id>', methods=('POST',))
+def supprimer(id):
+    conn = get_db_connection()
+    conn.execute('DELETE FROM taches WHERE id = ?', (id,))
     conn.commit()
     conn.close()
+    flash('Tâche supprimée!')
+    return redirect(url_for('index'))
 
-    return redirect(url_for("consultation"))
+# 4. Marquer comme terminée
+@app.route('/terminer/<int:id>', methods=('POST',))
+def terminer(id):
+    conn = get_db_connection()
+    # On met à jour le statut à 1 (Vrai)
+    conn.execute('UPDATE taches SET est_terminee = 1 WHERE id = ?', (id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('index'))
 
-
-# --------------------
-# LANCEMENT
-# --------------------
-if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0")
+if __name__ == '__main__':
+    app.run(debug=True)
