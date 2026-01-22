@@ -37,7 +37,7 @@ def ajouter():
             return redirect(url_for('index'))
            
     return render_template('ajouter.html')
-
+'''
 # 3. Supprimer une tâche
 @app.route('/supprimer/<int:id>', methods=('POST',))
 def supprimer(id):
@@ -47,6 +47,20 @@ def supprimer(id):
     conn.close()
     flash('Tâche supprimée!')
     return redirect(url_for('index'))
+'''
+@app.route('/supprimer/<int:id>', methods=('GET', 'POST'))
+def supprimer(id):
+    conn = get_db_connection()
+    if request.method == 'POST':
+        conn.execute('DELETE FROM taches WHERE id = ?', (id,))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('index'))
+    
+    # Si c'est en GET, on récupère la tâche pour demander confirmation
+    tache = conn.execute('SELECT * FROM taches WHERE id = ?', (id,)).fetchone()
+    conn.close()
+    return render_template('supprimer_confirmation.html', tache=tache)
 
 # 4. Marquer comme terminée
 @app.route('/terminer/<int:id>', methods=('POST',))
