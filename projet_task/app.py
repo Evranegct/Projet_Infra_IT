@@ -30,7 +30,7 @@ def add_task():
                      (titre, description, date_echeance, 0))
         conn.commit()
         conn.close()
-        return redirect(url_for('index'))
+        return redirect(url_for('add_task.html'))
     # Si c'est un GET, on affiche le formulaire
     return render_template('add_task.html')
 
