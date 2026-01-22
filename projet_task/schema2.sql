@@ -7,3 +7,8 @@ CREATE TABLE tasks (
     date_echeance TEXT, -- SQLite stocke les dates sous forme de texte (YYYY-MM-DD)
     est_terminee INTEGER DEFAULT 0 -- 0 = En cours, 1 = Terminée
 );
+CREATE TABLE books (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    title TEXT NOT NULL,
+    author TEXT NOT NULL
+);
