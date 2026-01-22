@@ -2,7 +2,7 @@ import sqlite3
 
 connection = sqlite3.connect('tasks.db') # Nom de votre nouvelle base
 
-with open('schema.sql') as f:
+with open('schema2.sql') as f:
     connection.executescript(f.read())
 
 connection.commit()
