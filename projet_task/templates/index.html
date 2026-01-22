@@ -1,1 +1,23 @@
+<h2>Mes Tâches</h2>
+<a href="{{ url_for('add_task') }}">Ajouter une nouvelle tâche</a>
 
+<table border="1">
+    <tr>
+        <th>Titre</th>
+        <th>Description</th>
+        <th>Échéance</th>
+        <th>Statut</th>
+        <th>Action</th>
+    </tr>
+    {% for task in tasks %}
+    <tr>
+        <td>{{ task['titre'] }}</td>
+        <td>{{ task['description'] }}</td>
+        <td>{{ task['date_echeance'] }}</td>
+        <td>{{ '✅ Terminée' if task['est_terminee'] == 1 else '⏳ En cours' }}</td>
+        <td>
+            <a href="{{ url_for('delete', id=task['id']) }}">Supprimer</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
