@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter une tâche</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; }
+        .form-container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        input, textarea { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box;}
+        button { width: 100%; padding: 10px; background: #28a745; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; }
+        button:hover { background: #218838; }
+        .retour { display: block; text-align: center; margin-top: 15px; color: #666; }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <h2>Nouvelle Tâche</h2>
+   
+    <form method="post">
+        <label for="titre">Titre de la tâche *</label>
+        <input type="text" name="titre" placeholder="Ex: Faire les courses" required>
+
+        <label for="description">Description</label>
+        <textarea name="description" rows="4" placeholder="Détails de la tâche..."></textarea>
+
+        <label for="date_echeance">Date d'échéance</label>
+        <input type="date" name="date_echeance">
+
+        <button type="submit">Enregistrer la tâche</button>
+    </form>
+
+    <a href="{{ url_for('index') }}" class="retour">← Retour à la liste</a>
+</div>
+
+</body>
+</html>
